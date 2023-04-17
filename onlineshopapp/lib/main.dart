@@ -4,6 +4,7 @@ import 'package:http/http.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:onlineshopapp/create.dart';
+import 'package:onlineshopapp/update.dart';
 
 import 'note.dart';
 
@@ -86,7 +87,18 @@ class _MyHomePageState extends State<MyHomePage> {
           itemCount: notes.length,
           itemBuilder: (context, index) {
             return ListTile(
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => UpdatePage(
+                      client: client,
+                      id: notes[index].id,
+                      note: notes[index].note,
+                    ),
+                  ),
+                );
+              },
               trailing: IconButton(
                 icon: Icon(Icons.delete),
                 onPressed: () => _deleteNote(notes[index].id),
