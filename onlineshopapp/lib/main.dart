@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:onlineshopapp/create.dart';
 
 import 'note.dart';
 
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'Django CRUD'),
     );
   }
 }
@@ -36,7 +37,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   Client client = http.Client();
-  List<Note> notes = [Note(id: 1, note: 'Hello')];
+  List<Note> notes = [];
 
   void _addNote() {}
 
@@ -59,6 +60,15 @@ class _MyHomePageState extends State<MyHomePage> {
     _retrieveNotes();
   }
 
+  void _deleteNote(int id) {
+    var deleteUrl = 'http://127.0.0.1:8000/notes/$id/delete/';
+    var url = Uri.parse(deleteUrl);
+    client.delete(url);
+    _retrieveNotes();
+  }
+
+  // void _addNote() {}
+
   @override
   Widget build(BuildContext context) {
     //
@@ -67,18 +77,35 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Center(
+      body: RefreshIndicator(
+        onRefresh: () {
+          _retrieveNotes();
+          return Future.value();
+        },
         child: ListView.builder(
           itemCount: notes.length,
           itemBuilder: (context, index) {
             return ListTile(
+              onTap: () {},
+              trailing: IconButton(
+                icon: Icon(Icons.delete),
+                onPressed: () => _deleteNote(notes[index].id),
+              ),
               title: Text("${index + 1}" + " " + notes[index].note),
             );
           },
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => CreatePage(
+                      client: client,
+                    )),
+          );
+        },
         child: const Icon(Icons.add),
       ),
     );
