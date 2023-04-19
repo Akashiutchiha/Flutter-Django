@@ -43,7 +43,7 @@ class _CreatePageState extends State<UpdatePage> {
                   widget.client.put(url, body: {'body': controller.text});
                   Navigator.pop(context);
                 },
-                child: Text("UPDATE NOTE"))
+                child: const Text("UPDATE NOTE"))
           ],
         ),
       ),

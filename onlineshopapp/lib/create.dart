@@ -24,7 +24,7 @@ class _CreatePageState extends State<CreatePage> {
               controller: controller,
               maxLines: 10,
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             ElevatedButton(
@@ -34,7 +34,7 @@ class _CreatePageState extends State<CreatePage> {
                   widget.client.post(url, body: {'body': controller.text});
                   Navigator.pop(context);
                 },
-                child: Text("CREATE NOTE"))
+                child: Text("ADD NOTE"))
           ],
         ),
       ),
